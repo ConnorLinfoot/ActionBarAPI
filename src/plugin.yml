@@ -1,0 +1,4 @@
+name: ActionBarAPI
+description: ActionBarAPI
+main: com.connorlinfoot.actionbarapi.API
+version: 1.0
