@@ -9,11 +9,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public class API extends JavaPlugin implements Listener {
+public class ActionBarAPI extends JavaPlugin implements Listener {
 
     public void onEnable() {
         getConfig().options().copyDefaults(true);
