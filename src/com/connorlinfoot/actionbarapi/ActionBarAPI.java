@@ -1,18 +1,25 @@
 package com.connorlinfoot.actionbarapi;
 
-import net.minecraft.server.v1_7_R4.ChatSerializer;
-import net.minecraft.server.v1_7_R4.IChatBaseComponent;
-import net.minecraft.server.v1_7_R4.PacketPlayOutChat;
+import net.minecraft.server.v1_8_R1.ChatSerializer;
+import net.minecraft.server.v1_8_R1.IChatBaseComponent;
+import net.minecraft.server.v1_8_R1.PacketPlayOutChat;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 
-public class ActionBarAPI extends JavaPlugin implements Listener {
+public class ActionBarAPI extends JavaPlugin {
 
     public void onEnable() {
         getConfig().options().copyDefaults(true);
@@ -36,9 +43,8 @@ public class ActionBarAPI extends JavaPlugin implements Listener {
 
     public static void sendActionBar(Player player, String message){
         CraftPlayer p = (CraftPlayer) player;
-        if (p.getHandle().playerConnection.networkManager.getVersion() != 47) return; // Don't run if player is not on 1.8
         IChatBaseComponent cbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
-        PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc,2);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppoc);
+        PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, (byte) 2);
+        p.getHandle().playerConnection.sendPacket(ppoc);
     }
 }
