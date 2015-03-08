@@ -1,8 +1,5 @@
 package com.connorlinfoot.actionbarapi;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -10,11 +7,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 
 public class ActionBarAPI extends JavaPlugin {
-	
 	public static boolean works = true;
-	
 	public static String nmsver;
 
     public void onEnable() {
