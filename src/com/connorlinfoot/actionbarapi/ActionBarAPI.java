@@ -85,15 +85,18 @@ public class ActionBarAPI extends JavaPlugin
     {
         sendActionBar(player, message);
 
-        // Sends empty message at the end of the duration. Allows messages shorter than 3 seconds, ensures precision.
-        new BukkitRunnable()
+        if(duration>=0)
         {
-            @Override
-            public void run()
+            // Sends empty message at the end of the duration. Allows messages shorter than 3 seconds, ensures precision.
+            new BukkitRunnable()
             {
-                sendActionBar(player, "");
-            }
-        }.runTaskLater(plugin, duration+1);
+                @Override
+                public void run()
+                {
+                    sendActionBar(player, "");
+                }
+            }.runTaskLater(plugin, duration + 1);
+        }
 
         // Re-sends the messages every 3 seconds so it doesn't go away from the player's screen.
         while (duration > 60)
@@ -109,6 +112,18 @@ public class ActionBarAPI extends JavaPlugin
                 }
             }.runTaskLater(plugin, (long) sched);
         }
+    }
 
+    public static void sendActionBarToAllPlayers(String message)
+    {
+        sendActionBarToAllPlayers(message, -1);
+    }
+
+    public static void sendActionBarToAllPlayers(String message, int duration)
+    {
+        for(Player p : Bukkit.getOnlinePlayers())
+        {
+            sendActionBar(p, message, duration);
+        }
     }
 }
