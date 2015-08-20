@@ -5,17 +5,21 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 
 public class ActionBarAPI extends JavaPlugin {
+    public static Plugin plugin;
 	public static boolean works = true;
 	public static String nmsver;
 
     public void onEnable() {
+        plugin=this;
         getConfig().options().copyDefaults(true);
         saveConfig();
         Server server = getServer();
@@ -67,5 +71,24 @@ public class ActionBarAPI extends JavaPlugin {
     		ex.printStackTrace();
     		works = false;
     	}
+    }
+
+    public static void sendActionBar(final Player player, final String message, int duration)
+    {
+        sendActionBar(player, message);
+
+        while(duration>60)
+        {
+            duration-=60;
+            int sched = duration%60;
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    sendActionBar(player, message);
+                }
+            }.runTaskLater(plugin, (long) sched);
+        }
     }
 }
