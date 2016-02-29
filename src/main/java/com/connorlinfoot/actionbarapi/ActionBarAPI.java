@@ -44,7 +44,7 @@ public class ActionBarAPI extends JavaPlugin {
             Object ppoc;
             Class<?> c4 = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
             Class<?> c5 = Class.forName("net.minecraft.server." + nmsver + ".Packet");
-            if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) {
+            if ((nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) && !nmsver.startsWith("v1_9_")) {
                 Class<?> c2 = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
                 Class<?> c3 = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
                 Method m3 = c2.getDeclaredMethod("a", String.class);
