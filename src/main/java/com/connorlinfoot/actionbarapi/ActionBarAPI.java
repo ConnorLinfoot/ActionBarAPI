@@ -78,8 +78,6 @@ public class ActionBarAPI extends JavaPlugin implements Listener {
 		if (pluginMessage != null && event.getPlayer().isOp()) {
 			event.getPlayer().sendMessage(pluginMessage);
 		}
-
-		sendActionBar(event.getPlayer(), "THIS IS A TEST", 500);
 	}
 
 	public static void sendActionBar(Player player, String message) {
