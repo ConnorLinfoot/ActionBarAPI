@@ -2,6 +2,9 @@ package com.connorlinfoot.actionbarapi;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.json.simple.JSONObject;
@@ -14,11 +17,14 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class CLUpdate {
+public class CLUpdate implements Listener {
 	private CLUpdate.UpdateResult result = CLUpdate.UpdateResult.DISABLED;
 	private String version;
 	private Plugin plugin;
 	private String message = null;
+	private String pluginMessage = null;
+	private String updateMessage = null;
+	private boolean updateAvailable = false;
 
 	public enum UpdateResult {
 		NO_UPDATE,
@@ -28,7 +34,12 @@ public class CLUpdate {
 
 	public CLUpdate(JavaPlugin plugin) {
 		this.plugin = plugin;
-		doCheck();
+		Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+			@Override
+			public void run() {
+				doCheck();
+			}
+		});
 	}
 
 	private void doCheck() {
@@ -59,10 +70,12 @@ public class CLUpdate {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public UpdateResult getResult() {
-		return result;
+		Bukkit.getScheduler().runTask(plugin, new Runnable() {
+			@Override
+			public void run() {
+				handleResult();
+			}
+		});
 	}
 
 	public String getVersion() {
@@ -91,4 +104,39 @@ public class CLUpdate {
 	public String getMessage() {
 		return message;
 	}
+
+	public void handleResult() {
+		if (getMessage() != null) {
+			pluginMessage = getMessage();
+		}
+
+		switch (result) {
+			default:
+			case NO_UPDATE:
+				updateAvailable = false;
+				updateMessage = "No update was found, you are running the latest version.";
+				break;
+			case DISABLED:
+				updateAvailable = false;
+				updateMessage = "You currently have update checks disabled";
+				break;
+			case UPDATE_AVAILABLE:
+				updateAvailable = true;
+				updateMessage = "An update for " + plugin.getDescription().getName() + " is available, new version is " + getVersion() + ". Your installed version is " + plugin.getDescription().getVersion() + ".\nPlease update to the latest version :)";
+				break;
+		}
+
+		plugin.getLogger().info(updateMessage);
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		if (updateAvailable && event.getPlayer().isOp()) {
+			event.getPlayer().sendMessage(updateMessage);
+		}
+		if (pluginMessage != null && event.getPlayer().isOp()) {
+			event.getPlayer().sendMessage(pluginMessage);
+		}
+	}
+
 }

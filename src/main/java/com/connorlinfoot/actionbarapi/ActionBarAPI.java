@@ -5,9 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -20,10 +18,6 @@ public class ActionBarAPI extends JavaPlugin implements Listener {
 	public static Plugin plugin;
 	public static boolean works = true;
 	public static String nmsver;
-	private String pluginPrefix = ChatColor.GRAY + "[" + ChatColor.AQUA + "ActionBarAPI" + ChatColor.GRAY + "] " + ChatColor.RESET;
-	private String pluginMessage = null;
-	private String updateMessage = null;
-	private boolean updateAvailable = false;
 	private static boolean useOldMethods = false;
 
 	public void onEnable() {
@@ -32,27 +26,6 @@ public class ActionBarAPI extends JavaPlugin implements Listener {
 		saveConfig();
 
 		CLUpdate clUpdate = new CLUpdate(this);
-		CLUpdate.UpdateResult updateResult = clUpdate.getResult();
-
-		if (clUpdate.getMessage() != null) {
-			pluginMessage = clUpdate.getMessage();
-		}
-
-		switch (updateResult) {
-			default:
-			case NO_UPDATE:
-				updateAvailable = false;
-				updateMessage = pluginPrefix + "No update was found, you are running the latest version.";
-				break;
-			case DISABLED:
-				updateAvailable = false;
-				updateMessage = pluginPrefix + "You currently have update checks disabled";
-				break;
-			case UPDATE_AVAILABLE:
-				updateAvailable = true;
-				updateMessage = pluginPrefix + "An update for " + getDescription().getName() + " is available, new version is " + clUpdate.getVersion() + ". Your installed version is " + getDescription().getVersion() + ".\nPlease update to the latest version :)";
-				break;
-		}
 
 		Server server = getServer();
 		ConsoleCommandSender console = server.getConsoleSender();
@@ -65,19 +38,7 @@ public class ActionBarAPI extends JavaPlugin implements Listener {
 		}
 
 		console.sendMessage(ChatColor.AQUA + getDescription().getName() + " V" + getDescription().getVersion() + " has been enabled!");
-		if (updateMessage != null)
-			console.sendMessage(updateMessage);
-		Bukkit.getPluginManager().registerEvents(this, this);
-	}
-
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		if (updateAvailable && event.getPlayer().isOp()) {
-			event.getPlayer().sendMessage(updateMessage);
-		}
-		if (pluginMessage != null && event.getPlayer().isOp()) {
-			event.getPlayer().sendMessage(pluginMessage);
-		}
+		Bukkit.getPluginManager().registerEvents(clUpdate, this);
 	}
 
 	public static void sendActionBar(Player player, String message) {

@@ -6,7 +6,7 @@
 
     <groupId>com.connorlinfoot</groupId>
     <artifactId>ActionBarAPI</artifactId>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
