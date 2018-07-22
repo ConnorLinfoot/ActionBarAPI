@@ -6,7 +6,7 @@
 
     <groupId>com.connorlinfoot</groupId>
     <artifactId>ActionBarAPI</artifactId>
-    <version>1.5.3</version>
+    <version>1.5.4</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,7 +52,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.12-R0.1-SNAPSHOT</version>
+            <version>1.13-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
