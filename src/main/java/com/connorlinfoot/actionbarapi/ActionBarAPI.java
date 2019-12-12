@@ -24,7 +24,7 @@ public class ActionBarAPI extends JavaPlugin implements Listener {
         getConfig().options().copyDefaults(true);
         saveConfig();
 
-        CLUpdate clUpdate = new CLUpdate(this);
+        boolean enableUpdates = getConfig().getBoolean("updates");
 
         Server server = getServer();
         ConsoleCommandSender console = server.getConsoleSender();
@@ -37,7 +37,10 @@ public class ActionBarAPI extends JavaPlugin implements Listener {
         }
 
         console.sendMessage(ChatColor.AQUA + getDescription().getName() + " V" + getDescription().getVersion() + " has been enabled!");
-        Bukkit.getPluginManager().registerEvents(clUpdate, this);
+        if(enableUpdates) {
+            CLUpdate clUpdate = new CLUpdate(this);
+            Bukkit.getPluginManager().registerEvents(clUpdate, this);
+        }
     }
 
     public static void sendActionBar(Player player, String message) {
