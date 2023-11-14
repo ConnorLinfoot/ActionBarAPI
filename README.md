@@ -1,4 +1,4 @@
 ActionBarAPI
 ============
 
-More info here http://www.spigotmc.org/resources/actionbarapi.1315/
+More info here https://www.spigotmc.org/resources/actionbarapi-1-8-1-14-2.1315/
